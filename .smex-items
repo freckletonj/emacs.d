@@ -1,0 +1,32 @@
+
+;; ----- smex-history -----
+(
+ org-mode
+ package-list-packages
+ px-toggle
+ eval-buffer
+ load-file
+ package-install
+ px-preview
+)
+
+;; ----- smex-data -----
+(
+ (package-install . 7)
+ (autopair-mode . 1)
+ (apropos . 1)
+ (org-preview-latex-fragment . 13)
+ (LaTeX-mode . 5)
+ (python-mode . 1)
+ (package-list-packages . 11)
+ (package-menu-mark-delete . 1)
+ (org-mode . 4)
+ (px-preview . 7)
+ (list-packages . 1)
+ (px-remove . 4)
+ (px-toggle . 11)
+ (TeX-mode . 1)
+ (load-file . 1)
+ (eval-buffer . 2)
+ (LaTeX-math-{ . 1)
+)
