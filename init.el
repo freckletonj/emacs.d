@@ -31,13 +31,17 @@
 ;; turn off: scroll bar, tool bar, menu bar
 ;; (scroll-bar-mode -1)
 (tool-bar-mode -1)
-(menu-bar-mode -1)
+;;(menu-bar-mode -1)
 
 
 ;; Display Settings - show file name
 (when window-system
   (setq frame-title-format '(buffer-file-name "%f" ("%b"))))
 
+;; replace selection
+(delete-selection-mode 1)
+
+;; white space
 (setq-default indicate-empty-lines t)
 (when (not indicate-empty-lines)
   (toggle-indicate-empty-lines))
@@ -60,6 +64,10 @@
 (ido-mode t)
 (setq ido-enable-flex-matching t
       ido-use-virtual-buffers t)
+
+;; multiple cursors
+(require 'multiple-cursors)
+(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
 
 ;; Smex - easier M-x nav
 (setq smex-save-file (expand-file-name ".smex-items" user-emacs-directory))
@@ -95,7 +103,7 @@
 (setq-default show-trailing-whitespace t)
 
 
-;; Unset C-z (in a terminal, this closes out of everything)
+;; Unset C-z, for safety (in a terminal, this closes out of everything)
 (global-set-key "\C-z" nil)
 (global-set-key "\C-x\C-z" nil)
 
