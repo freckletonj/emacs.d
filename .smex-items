@@ -1,13 +1,13 @@
 
 ;; ----- smex-history -----
 (
+ list-packages
  org-mode
  package-list-packages
  px-toggle
  eval-buffer
  load-file
  package-install
- px-preview
 )
 
 ;; ----- smex-data -----
@@ -22,7 +22,7 @@
  (package-menu-mark-delete . 1)
  (org-mode . 4)
  (px-preview . 7)
- (list-packages . 1)
+ (list-packages . 2)
  (px-remove . 4)
  (px-toggle . 11)
  (TeX-mode . 1)

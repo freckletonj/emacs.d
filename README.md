@@ -15,4 +15,7 @@ as of <2015-01-05 Mon> this is to allow support for LaTeX in org-mode using
 ** C-c C-c : remove preview
 
 * Multiple Cursors
-** 
+** https://github.com/magnars/multiple-cursors.el
+** C-S-<click> : place multiple cursors
+** <enter> : escape multiple cursors mode
+** C-j : carriage return while in m.c. mode
