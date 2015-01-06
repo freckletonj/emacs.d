@@ -1,13 +1,13 @@
 
 ;; ----- smex-history -----
 (
- list-packages
  org-mode
+ linum-mode
+ list-packages
  package-list-packages
  px-toggle
  eval-buffer
  load-file
- package-install
 )
 
 ;; ----- smex-data -----
@@ -20,7 +20,7 @@
  (python-mode . 1)
  (package-list-packages . 11)
  (package-menu-mark-delete . 1)
- (org-mode . 4)
+ (org-mode . 5)
  (px-preview . 7)
  (list-packages . 2)
  (px-remove . 4)
@@ -29,4 +29,5 @@
  (load-file . 1)
  (eval-buffer . 2)
  (LaTeX-math-{ . 1)
+ (linum-mode . 1)
 )

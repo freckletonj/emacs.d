@@ -70,29 +70,29 @@
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 
 ;; Whitespace cleanup
-(defun untabify-buffer ()
-  (interactive)
-  (untabify (point-min) (point-max)))
+;; (defun untabify-buffer ()
+;;   (interactive)
+;;   (untabify (point-min) (point-max)))
 
-(defun indent-buffer ()
-  (interactive)
-  (indent-region (point-min) (point-max)))
+;; (defun indent-buffer ()
+;;   (interactive)
+;;   (indent-region (point-min) (point-max)))
 
-(defun cleanup-buffer ()
-  "Perform a bunch of operations on the whitespace content of a buffer."
-  (interactive)
-  (indent-buffer)
-  (untabify-buffer)
-  (delete-trailing-whitespace))
+;; (defun cleanup-buffer ()
+;;   "Perform a bunch of operations on the whitespace content of a buffer."
+;;   (interactive)
+;;   (indent-buffer)
+;;   (untabify-buffer)
+;;   (delete-trailing-whitespace))
 
-(defun cleanup-region (beg end)
-  "Remove tmux artifacts from region."
-  (interactive "r")
-  (dolist (re '("\\\\│\·*\n" "\W*│\·*"))
-    (replace-regexp re "" nil beg end)))
+;; (defun cleanup-region (beg end)
+;;   "Remove tmux artifacts from region."
+;;   (interactive "r")
+;;   (dolist (re '("\\\\│\·*\n" "\W*│\·*"))
+;;     (replace-regexp re "" nil beg end)))
 
-(global-set-key (kbd "C-x M-t") 'cleanup-region)
-(global-set-key (kbd "C-c n") 'cleanup-buffer)
+;; (global-set-key (kbd "C-x M-t") 'cleanup-region)
+;; (global-set-key (kbd "C-c n") 'cleanup-buffer)
 
 (setq-default show-trailing-whitespace t)
 
@@ -101,3 +101,5 @@
 (global-set-key "\C-z" nil)
 (global-set-key "\C-x\C-z" nil)
 
+;; move-text
+;; M-S-<up> move text/region up
