@@ -38,7 +38,7 @@
   (toggle-indicate-empty-lines))
 
 ;; Backup Files - disable
-(setq make-backup-files nil)
+(setq make-backup-files nil) 
 
 ;; Yes and No - 'y' counts as 'yes', 'n' counts as 'no'
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -49,6 +49,9 @@
 (global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
+
+;; select-click region
+(define-key global-map (kbd "<S-down-mouse-1>") 'mouse-save-then-kill)
 
 ;; Ido - easier buffer nav
 (ido-mode t)
@@ -82,3 +85,29 @@
 (global-set-key (kbd "C-S-z") 'redo)
 ;; C-x u  (`undo-tree-visualize')
 ;;   Visualize the undo tree.
+
+;; neotree - for file navigation
+
+;; ace-jump : navigate quickly inside a buffer's text by jumping the cursor to desired locations
+(require 'ace-jump-mode)
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+(define-key global-map (kbd "C-c C-c SPC") 'ace-jump-line-mode)
+(define-key global-map (kbd "C-c C-c C-c SPC") 'ace-jump-char-mode)
+
+
+;; TO ADD
+;; C-d : multicursor select the next like this
+;; move lines/regions up and down by keyboard
+;; save buffer state on close
+;; multi-cursors buffer
+;; more intuitive 'find'
+;; minimap / sublimity
+;; C-<backspace> is kinda wierd with white space
+
+
+
+
+
+
+
+

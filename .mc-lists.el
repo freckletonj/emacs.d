@@ -3,7 +3,11 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+	indent-for-tab-command
+	kill-region
 	mouse-save-then-kill
+	org-beginning-of-line
+	org-meta-return
 	org-self-insert-command
 	))
 
