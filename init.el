@@ -91,8 +91,9 @@
 ;; ace-jump : navigate quickly inside a buffer's text by jumping the cursor to desired locations
 (require 'ace-jump-mode)
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
-(define-key global-map (kbd "C-c C-c SPC") 'ace-jump-line-mode)
-(define-key global-map (kbd "C-c C-c C-c SPC") 'ace-jump-char-mode)
+;; C-c C-c is compile, can't use that
+;;(define-key global-map (kbd "C-c C-c SPC") 'ace-jump-line-mode)
+;;(define-key global-map (kbd "C-c C-c C-c SPC") 'ace-jump-char-mode)
 
 
 ;; TO ADD

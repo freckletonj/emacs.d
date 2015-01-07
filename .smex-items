@@ -1,13 +1,13 @@
 
 ;; ----- smex-history -----
 (
+ whitespace-mode
+ dired
+ neotree
+ list-packages
+ mc/edit-lines
  linum-mode
  python-mode
- list-packages
- org-mode
- package-list-packages
- px-toggle
- eval-buffer
 )
 
 ;; ----- smex-data -----
@@ -22,7 +22,7 @@
  (package-menu-mark-delete . 1)
  (org-mode . 5)
  (px-preview . 7)
- (list-packages . 3)
+ (list-packages . 5)
  (px-remove . 4)
  (px-toggle . 11)
  (TeX-mode . 1)
@@ -30,4 +30,8 @@
  (eval-buffer . 2)
  (LaTeX-math-{ . 1)
  (linum-mode . 2)
+ (mc/edit-lines . 2)
+ (neotree . 1)
+ (dired . 1)
+ (whitespace-mode . 2)
 )

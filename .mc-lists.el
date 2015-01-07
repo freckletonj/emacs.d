@@ -9,6 +9,8 @@
 	org-beginning-of-line
 	org-meta-return
 	org-self-insert-command
+	python-indent-electric-colon
+	yank-rectangle
 	))
 
 (setq mc/cmds-to-run-once
