@@ -95,6 +95,11 @@
 ;;(define-key global-map (kbd "C-c C-c SPC") 'ace-jump-line-mode)
 ;;(define-key global-map (kbd "C-c C-c C-c SPC") 'ace-jump-char-mode)
 
+;; Transparency
+;;(set-frame-parameter (selected-frame) 'alpha '(<active> [<inactive>]))
+(set-frame-parameter (selected-frame) 'alpha '(99 93))
+;;(add-to-list 'default-frame-alist '(alpha 85 50))
+
 
 ;; TO ADD
 ;; C-d : multicursor select the next like this
