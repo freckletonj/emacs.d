@@ -1,13 +1,13 @@
 
 ;; ----- smex-history -----
 (
- org-mode
  linum-mode
+ python-mode
  list-packages
+ org-mode
  package-list-packages
  px-toggle
  eval-buffer
- load-file
 )
 
 ;; ----- smex-data -----
@@ -17,17 +17,17 @@
  (apropos . 1)
  (org-preview-latex-fragment . 13)
  (LaTeX-mode . 5)
- (python-mode . 1)
+ (python-mode . 2)
  (package-list-packages . 11)
  (package-menu-mark-delete . 1)
  (org-mode . 5)
  (px-preview . 7)
- (list-packages . 2)
+ (list-packages . 3)
  (px-remove . 4)
  (px-toggle . 11)
  (TeX-mode . 1)
  (load-file . 1)
  (eval-buffer . 2)
  (LaTeX-math-{ . 1)
- (linum-mode . 1)
+ (linum-mode . 2)
 )

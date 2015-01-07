@@ -30,7 +30,7 @@
   (setq frame-title-format '(buffer-file-name "%f" ("%b"))))
 
 ;;display line numbers (slows down if 10k+ lines
-(linum-mode 1)
+(global-linum-mode 1)
 
 ;; replace selection
 (delete-selection-mode 1)
