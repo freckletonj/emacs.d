@@ -1,13 +1,13 @@
 
 ;; ----- smex-history -----
 (
+ mc/edit-lines
+ artist-mode
+ neotree
  whitespace-mode
  dired
- neotree
  list-packages
- mc/edit-lines
  linum-mode
- python-mode
 )
 
 ;; ----- smex-data -----
@@ -30,8 +30,9 @@
  (eval-buffer . 2)
  (LaTeX-math-{ . 1)
  (linum-mode . 2)
- (mc/edit-lines . 2)
- (neotree . 1)
+ (mc/edit-lines . 5)
+ (neotree . 2)
  (dired . 1)
  (whitespace-mode . 2)
+ (artist-mode . 2)
 )
