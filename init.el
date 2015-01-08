@@ -118,6 +118,10 @@
   python-shell-completion-string-code
     "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 
+;; TODO
+;; config files
+;; certs for laptop (github)
+
 ;; TO ADD
 ;; C-d : multicursor select the next like this
 ;; move lines/regions up and down by keyboard
@@ -126,6 +130,7 @@
 ;; more intuitive 'find'
 ;; minimap / sublimity
 ;; C-<backspace> is kinda wierd with white space
+;; comments spread out wierd
 
 
 
