@@ -97,9 +97,22 @@
 
 ;; Transparency
 ;;(set-frame-parameter (selected-frame) 'alpha '(<active> [<inactive>]))
-(set-frame-parameter (selected-frame) 'alpha '(99 93))
+(set-frame-parameter (selected-frame) 'alpha '(98 93))
 ;;(add-to-list 'default-frame-alist '(alpha 85 50))
 
+;; set up for iPython (instead of python)
+(require 'python)
+(setq
+  python-shell-interpreter "ipython"
+  python-shell-interpreter-args "--pylab"
+  python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+  python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+  python-shell-completion-setup-code
+    "from IPython.core.completerlib import module_completion"
+  python-shell-completion-module-string-code
+    "';'.join(module_completion('''%s'''))\n"
+  python-shell-completion-string-code
+    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 
 ;; TO ADD
 ;; C-d : multicursor select the next like this
@@ -109,11 +122,5 @@
 ;; more intuitive 'find'
 ;; minimap / sublimity
 ;; C-<backspace> is kinda wierd with white space
-
-
-
-
-
-
 
 
