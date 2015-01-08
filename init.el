@@ -76,6 +76,10 @@
 ;; move-text
 ;; M-S-<up> move text/region up
 
+;; expand-region semantically
+(global-set-key (kbd "C-@") 'er/expand-region)
+
+
 ;; undo tree
 (require 'undo-tree)
 (global-undo-tree-mode 1)
@@ -97,7 +101,7 @@
 
 ;; Transparency
 ;;(set-frame-parameter (selected-frame) 'alpha '(<active> [<inactive>]))
-(set-frame-parameter (selected-frame) 'alpha '(98 93))
+(set-frame-parameter (selected-frame) 'alpha '(98 94))
 ;;(add-to-list 'default-frame-alist '(alpha 85 50))
 
 ;; set up for iPython (instead of python)
@@ -122,5 +126,11 @@
 ;; more intuitive 'find'
 ;; minimap / sublimity
 ;; C-<backspace> is kinda wierd with white space
+
+
+
+
+
+
 
 
