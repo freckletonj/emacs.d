@@ -1,38 +1,60 @@
 
 ;; ----- smex-history -----
 (
- mc/edit-lines
- artist-mode
- neotree
- whitespace-mode
- dired
+ web-mode
+ javascript-mode
  list-packages
- linum-mode
+ describe-key
+ exec-path-from-shell-initialize
+ customize-group
+ package-list-packages
 )
 
 ;; ----- smex-data -----
 (
- (package-install . 7)
+ (package-install . 14)
  (autopair-mode . 1)
  (apropos . 1)
- (org-preview-latex-fragment . 13)
+ (org-preview-latex-fragment . 15)
  (LaTeX-mode . 5)
- (python-mode . 2)
- (package-list-packages . 11)
+ (python-mode . 5)
+ (package-list-packages . 14)
  (package-menu-mark-delete . 1)
- (org-mode . 5)
+ (org-mode . 6)
  (px-preview . 7)
- (list-packages . 5)
+ (list-packages . 8)
  (px-remove . 4)
  (px-toggle . 11)
- (TeX-mode . 1)
- (load-file . 1)
+ (TeX-mode . 3)
+ (load-file . 2)
  (eval-buffer . 2)
  (LaTeX-math-{ . 1)
  (linum-mode . 2)
- (mc/edit-lines . 5)
+ (mc/edit-lines . 15)
  (neotree . 2)
  (dired . 1)
  (whitespace-mode . 2)
  (artist-mode . 2)
+ (revert-buffer . 1)
+ (ein:notebooklist-open . 8)
+ (server-start . 1)
+ (ein:ipynb-menu . 1)
+ (transpose-sexps . 2)
+ (octave-mode . 9)
+ (sort-lines . 8)
+ (replace-regexp . 12)
+ (replace-string . 1)
+ (capitalize-region . 71)
+ (toggle-case-fold-search . 1)
+ (yank-rectangle . 1)
+ (multi-web-mode . 1)
+ (html-mode . 3)
+ (web-mode . 8)
+ (make-directory . 1)
+ (set-variable . 4)
+ (flycheck-verify-setup . 7)
+ (customize-group . 1)
+ (exec-path-from-shell-initialize . 1)
+ (describe-key . 1)
+ (javascript-mode . 1)
 )

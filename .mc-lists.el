@@ -3,17 +3,39 @@
 
 (setq mc/cmds-to-run-for-all
       '(
-	indent-for-tab-command
-	kill-region
-	mouse-save-then-kill
-	org-beginning-of-line
-	org-meta-return
-	org-self-insert-command
-	python-indent-electric-colon
-	yank-rectangle
-	))
+        ace-jump-mode
+        coffee-dedent-line-backspace
+        coffee-newline-and-indent
+        comment-or-uncomment-region
+        delete-horizontal-space
+        eval-expression
+        forward-sexp
+        indent-for-tab-command
+        jade-indent
+        keyboard-escape-quit
+        kill-region
+        kmacro-start-macro
+        mark-word
+        mouse-save-then-kill
+        org-beginning-of-line
+        org-cycle
+        org-delete-char
+        org-end-of-line
+        org-kill-line
+        org-meta-return
+        org-return-indent
+        org-self-insert-command
+        org-yank
+        overwrite-mode
+        python-indent-electric-colon
+        sgml-slash
+        smex
+        yank-rectangle
+        ))
 
 (setq mc/cmds-to-run-once
       '(
-	org-open-at-mouse
-	))
+        org-open-at-mouse
+        python-indent-shift-left
+        scroll-bar-toolkit-scroll
+        ))

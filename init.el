@@ -1,3 +1,5 @@
+;;;
+
 ;; Add MELPA package archives
 (when (>= emacs-major-version 24)
   (require 'package)
@@ -80,13 +82,13 @@
 (global-set-key (kbd "C-@") 'er/expand-region)
 
 
-;; undo tree
-(require 'undo-tree)
-(global-undo-tree-mode 1)
-(defalias 'redo 'undo-tree-redo)
-(defalias 'redo 'undo-tree-undo)
-(global-set-key (kbd "C-z") 'undo)
-(global-set-key (kbd "C-S-z") 'redo)
+;; undo tree - STRUGGLES WITH MULTIPLE CURSORS
+;; (require 'undo-tree)
+;; (global-undo-tree-mode 1)
+;; (defalias 'redo 'undo-tree-redo)
+;; (defalias 'redo 'undo-tree-undo)
+;; (global-set-key (kbd "C-z") 'undo)
+;; (global-set-key (kbd "C-S-z") 'redo)
 ;; C-x u  (`undo-tree-visualize')
 ;;   Visualize the undo tree.
 
@@ -118,6 +120,20 @@
   python-shell-completion-string-code
     "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 
+;; scroll one line at a time (less "jumpy" than defaults)
+;; (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ; one line at a time
+;; (setq mouse-wheel-progressive-speed nil)            ; don't accelerate scrolling
+;; (setq-default smooth-scroll-margin 0)
+;; (setq scroll-step 1
+;;       scroll-margin 1
+;;       scroll-conservatively 100000)
+
+;; multiple cursors stuff
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
 ;; TODO
 ;; config files
 ;; certs for laptop (github)
@@ -134,8 +150,80 @@
 
 
 
+;; Open Octave files (*.m) in octave-mode
+(add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
+
+
+;; multi-web-mode : for editing html/js/web stuff
+;; (require 'multi-web-mode)
+;; (setq mweb-default-major-mode 'html-mode)
+;; (setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
+;;                   (js-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
+;;                   (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
+;; (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
+;; (multi-web-global-mode 1)
+
+
+(require 'web-mode)
+;; (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(setq-default indent-tabs-mode nil)
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(setq-default tab-width 4)
+
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+
+
+(autoload 'markdown-mode "markdown-mode"
+   "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
 
 
+;; React Stuff ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; taken from: http://codewinds.com/blog/2015-04-02-emacs-flycheck-eslint-jsx.html
+;; use web-mode for .jsx files
+(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
+(setq web-mode-enable-auto-quoting nil);; nil means false
 
+(setq web-mode-content-types-alist
+  '(("jsx" . "\\.js[x]?\\'")));;set content-type to "jsx" instead of "js"
 
+(add-hook 'web-mode-hook
+          (lambda ()
+            (setq web-mode-code-indent-offset 2)
+            (setq web-mode-markup-indent-offset 2)
+            (setq web-mode-attr-indent-offset 4)))
+
+;; http://www.flycheck.org/manual/latest/index.html
+(require 'flycheck)
+
+;; turn on flychecking globally
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+;; disable jshint since we prefer eslint checking
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(javascript-jshint)))
+
+;; use eslint with web-mode for jsx files
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+
+;; disable json-jsonlist checking for json files
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(json-jsonlist)))
+
+;; https://github.com/purcell/exec-path-from-shell
+;; only need exec-path-from-shell on OSX
+;; this hopefully sets up path and other vars better
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
