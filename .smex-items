@@ -1,13 +1,13 @@
 
 ;; ----- smex-history -----
 (
- web-mode
- javascript-mode
+ recover-this-file
+ buf-move-left
+ windmove-right
  list-packages
- describe-key
- exec-path-from-shell-initialize
- customize-group
- package-list-packages
+ cider-jack-in
+ cider-connect
+ buf-move-right
 )
 
 ;; ----- smex-data -----
@@ -22,7 +22,7 @@
  (package-menu-mark-delete . 1)
  (org-mode . 6)
  (px-preview . 7)
- (list-packages . 8)
+ (list-packages . 15)
  (px-remove . 4)
  (px-toggle . 11)
  (TeX-mode . 3)
@@ -30,7 +30,7 @@
  (eval-buffer . 2)
  (LaTeX-math-{ . 1)
  (linum-mode . 2)
- (mc/edit-lines . 15)
+ (mc/edit-lines . 16)
  (neotree . 2)
  (dired . 1)
  (whitespace-mode . 2)
@@ -39,9 +39,9 @@
  (ein:notebooklist-open . 8)
  (server-start . 1)
  (ein:ipynb-menu . 1)
- (transpose-sexps . 2)
+ (transpose-sexps . 4)
  (octave-mode . 9)
- (sort-lines . 8)
+ (sort-lines . 9)
  (replace-regexp . 12)
  (replace-string . 1)
  (capitalize-region . 71)
@@ -49,12 +49,36 @@
  (yank-rectangle . 1)
  (multi-web-mode . 1)
  (html-mode . 3)
- (web-mode . 8)
- (make-directory . 1)
+ (web-mode . 11)
+ (make-directory . 3)
  (set-variable . 4)
  (flycheck-verify-setup . 7)
- (customize-group . 1)
+ (customize-group . 2)
  (exec-path-from-shell-initialize . 1)
  (describe-key . 1)
- (javascript-mode . 1)
+ (javascript-mode . 3)
+ (modify-syntax-entry . 1)
+ (paredit-mode . 16)
+ (cider-jack-in . 6)
+ (cider-close-nrepl-session . 1)
+ (cider-refresh . 2)
+ (recover-this-file . 5)
+ (cider-jack-in-clojurescript . 3)
+ (cider-quit . 3)
+ (cider-version . 1)
+ (windmove-default-keybindings . 1)
+ (cider-eval-last-sexp-and-replace . 10)
+ (cider-test-run-test . 3)
+ (align . 1)
+ (clojure-align . 1)
+ (cider-repl-clear-buffer . 5)
+ (markdown . 2)
+ (markdown-mode . 2)
+ (erc . 2)
+ (erc-nickserv-identify . 1)
+ (org-shiftleft . 1)
+ (windmove-right . 2)
+ (buf-move-right . 2)
+ (buf-move-left . 2)
+ (cider-connect . 1)
 )

@@ -4,6 +4,11 @@
 (setq mc/cmds-to-run-for-all
       '(
         ace-jump-mode
+        backward-sexp
+        c-electric-semi&comma
+        c-electric-slash
+        cider-eval-last-sexp
+        clojure-align
         coffee-dedent-line-backspace
         coffee-newline-and-indent
         comment-or-uncomment-region
@@ -13,29 +18,70 @@
         indent-for-tab-command
         jade-indent
         keyboard-escape-quit
+        keyboard-quit
         kill-region
         kmacro-start-macro
         mark-word
+        markdown-cycle
+        markdown-exdent-or-delete
         mouse-save-then-kill
         org-beginning-of-line
         org-cycle
         org-delete-char
         org-end-of-line
+        org-force-self-insert
         org-kill-line
         org-meta-return
         org-return-indent
         org-self-insert-command
         org-yank
         overwrite-mode
+        paredit-backslash
+        paredit-backward
+        paredit-backward-kill-word
+        paredit-backward-slurp-sexp
+        paredit-backward-up
+        paredit-close-curly
+        paredit-close-round
+        paredit-close-square
+        paredit-comment-dwim
+        paredit-doublequote
+        paredit-forward
+        paredit-forward-barf-sexp
+        paredit-forward-delete
+        paredit-forward-kill-word
+        paredit-forward-slurp-sexp
+        paredit-forward-up
+        paredit-kill
+        paredit-newline
+        paredit-open-curly
+        paredit-open-round
+        paredit-open-square
+        paredit-semicolon
+        paredit-splice-sexp
+        paredit-splice-sexp-killing-backward
+        paredit-splice-sexp-killing-forward
+        paredit-wrap-round
         python-indent-electric-colon
+        reverse-transpose-sexps
         sgml-slash
         smex
+        transpose-sexps
+        universal-argument-minus
+        yaml-electric-dash-and-dot
         yank-rectangle
         ))
 
 (setq mc/cmds-to-run-once
       '(
+        cider-eval-defun-at-point
+        cider-load-buffer
+        comment-dwim
+        end-of-buffer
+        goto-line
+        ido-find-file
         org-open-at-mouse
-        python-indent-shift-left
+        paredit-reindent-defun
         scroll-bar-toolkit-scroll
+        yaml-electric-backspace
         ))
