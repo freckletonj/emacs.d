@@ -1,13 +1,13 @@
 
 ;; ----- smex-history -----
 (
- recover-this-file
+ cider-connect
+ eldoc-mode
  buf-move-left
+ recover-this-file
  windmove-right
  list-packages
  cider-jack-in
- cider-connect
- buf-move-right
 )
 
 ;; ----- smex-data -----
@@ -79,6 +79,7 @@
  (org-shiftleft . 1)
  (windmove-right . 2)
  (buf-move-right . 2)
- (buf-move-left . 2)
- (cider-connect . 1)
+ (buf-move-left . 3)
+ (cider-connect . 3)
+ (eldoc-mode . 1)
 )

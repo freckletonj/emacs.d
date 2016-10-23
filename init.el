@@ -14,7 +14,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes (quote ("64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" default)))
- '(safe-local-variable-values (quote ((hamlet/basic-offset . 4) (haskell-process-use-ghci . t) (haskell-indent-spaces . 4)))))
+ '(safe-local-variable-values (quote ((cider-cljs-lein-repl . "(do (dev) (go) (cljs-repl))") (cider-refresh-after-fn . "reloaded.repl/resume") (cider-refresh-before-fn . "reloaded.repl/suspend") (hamlet/basic-offset . 4) (haskell-process-use-ghci . t) (haskell-indent-spaces . 4)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -29,9 +29,9 @@
       initial-major-mode 'org-mode)
 
 ;; turn off: scroll bar, tool bar, menu bar
-;; (scroll-bar-mode -1)
+(scroll-bar-mode -1)
 (tool-bar-mode -1)
-;;(menu-bar-mode -1)
+(menu-bar-mode -1)
 
 ;; Display Settings - show file name
 (when window-system
@@ -40,6 +40,12 @@
 ;; navigate windows with S-<arrow>
 (when (fboundp 'windmove-default-keybindings)
   (windmove-default-keybindings))
+(global-set-key (kbd "C-S-<left>") 'buf-move-left)
+(global-set-key (kbd "C-S-<right>") 'buf-move-right)
+(global-set-key (kbd "C-S-<up>") 'buf-move-up)
+(global-set-key (kbd "C-S-<down>") 'buf-move-down)
+
+
 
 ;;display line numbers (slows down if 10k+ lines
 (global-linum-mode 1)
@@ -249,14 +255,48 @@
   (exec-path-from-shell-initialize))
 
 
-;; clojure
+;; ERC (IRC Chat Client) ------------------------------
+(defun irc ()
+    "Connect to the freenode"
+    (interactive)
+    (erc :server "irc.freenode.net"
+         :port 6667
+         :nick "joshfreck"
+         :password nil))
+(global-set-key "\C-ci"  'irc)
+;;(setq erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT"))
+(setq erc-hide-list '("JOIN" "PART" "QUIT"))
+
+
+
+;; clojure ------------------------------
 (require 'clojure-mode)
 (require 'cider-mode)
+(require 'cider)
 
 (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
 (setq exec-path (append exec-path '("~/bin")))
 (setenv "PATH" (concat (getenv "PATH") ":~/bin"))
 (add-hook 'clojure-mode-hook 'paredit-mode)
+
+;; disable paredit's default kbd's for slurping/barfing
+;; use insteadone of: C-S-[ (, ), {, } ]
+;; this may not be necessary if that binding already is globally bound elsewhere
+;; (eval-after-load "paredit-mode"
+;;   '(define-key paredit-mode-map (kbd "C-S-<right>") nil))
+;; (eval-after-load "paredit-mode"
+;;   '(define-key paredit-mode-map (kbd "C-S-<left>") nil))
+
+
+;; prevent hippie-expand from expanding lines
+;; this is especially problematic when trying to
+;; expand a line in paredit-mode, and h.e. adds
+;; mismatched parens
+(dolist (f '(try-expand-line try-expand-list))
+  (setq hippie-expand-try-functions-list
+        (remq f hippie-expand-try-functions-list)))
+
+
 
 (setq clojure-align-forms-automatically t)
 
@@ -282,7 +322,7 @@
     (paredit-forward) ; go to the next sexp
     (cider-eval-last-sexp) ;eval it
     ))
-;(define-key cider-mode-map (kbd "C-c C-v") nil) ; overwrite cider's use of C-c C-v
+(define-key cider-mode-map (kbd "C-c C-v") nil) ; overwrite cider's use of C-c C-v
 (global-set-key (kbd "C-c C-v") 'cider-eval-next-sexp)
 ;;123456789ABCDEFGH
 
@@ -295,26 +335,47 @@
 (global-set-key (kbd "C-M-(") 'reverse-transpose-sexps)
 (global-set-key (kbd "C-M-)") 'transpose-sexps)
 
-;; ERC (IRC Chat Client)
-(defun irc ()
-    "Connect to the freenode"
-    (interactive)
-    (erc :server "irc.freenode.net"
-         :port 6667
-         :nick "joshfreck"
-         :password nil))
-(global-set-key "\C-ci"  'irc)
-;;(setq erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT"))
-(setq erc-hide-list '("JOIN" "PART" "QUIT"))
 
-;; Clojure Figwheel-Cider nREPL Config stuff
-;;   https://github.com/bhauman/lein-figwheel/wiki/Using-the-Figwheel-REPL-within-NRepl
+;;;; Clojure Figwheel-Cider nREPL Config stuff
+;;     https://github.com/bhauman/lein-figwheel/wiki/Using-the-Figwheel-REPL-within-NRepl
 
-(require 'cider)
+;; for coordination between figwheel and CIDER
 (setq cider-cljs-lein-repl
       "(do (require 'figwheel-sidecar.repl-api)
            (figwheel-sidecar.repl-api/start-figwheel!)
            (figwheel-sidecar.repl-api/cljs-repl))")
+
+;;;; CIDER stuff ------------------------------
+;; http://cider.readthedocs.io/en/latest/using_the_repl/
+
+;; don't switch to repl buffers when CIDER boots
+(setq cider-repl-pop-to-buffer-on-connect nil)
+
+;; when using `C-c C-z` to switch to REPL buffer,
+;; do it in the same window
+(setq cider-repl-display-in-current-window t)
+
+;; wrap CIDER stack traces
+(setq cider-stacktrace-fill-column 80)
+
+;; enable paredit in your REPL
+(add-hook 'cider-repl-mode-hook 'paredit-mode)
+
+
+;; Interactive search key bindings. By default, C-s runs
+;; isearch-forward, so this swaps the bindings.
+(global-set-key (kbd "C-s") 'isearch-forward-regexp)
+(global-set-key (kbd "C-r") 'isearch-backward-regexp)
+(global-set-key (kbd "C-M-s") 'isearch-forward)
+(global-set-key (kbd "C-M-r") 'isearch-backward)
+
+;; save system clipboard strings to the kill ring
+;; so that if I copy from, say, Chrome, and then
+;; kill in emacs before pasting, I can still
+;; access Chrome's copied text
+(setq save-interprogram-paste-before-kill t)
+
+
 
 
 ;;; init.el ends here
