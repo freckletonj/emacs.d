@@ -1,13 +1,13 @@
 
 ;; ----- smex-history -----
 (
- cider-connect
- eldoc-mode
- buf-move-left
- recover-this-file
- windmove-right
+ hs-minor-mode
  list-packages
- cider-jack-in
+ yas-minor-mode
+ yas-expand
+ yas-about
+ show-paren-mode
+ capitalize-region
 )
 
 ;; ----- smex-data -----
@@ -22,7 +22,7 @@
  (package-menu-mark-delete . 1)
  (org-mode . 6)
  (px-preview . 7)
- (list-packages . 15)
+ (list-packages . 19)
  (px-remove . 4)
  (px-toggle . 11)
  (TeX-mode . 3)
@@ -58,7 +58,7 @@
  (describe-key . 1)
  (javascript-mode . 3)
  (modify-syntax-entry . 1)
- (paredit-mode . 16)
+ (paredit-mode . 17)
  (cider-jack-in . 6)
  (cider-close-nrepl-session . 1)
  (cider-refresh . 2)
@@ -82,4 +82,12 @@
  (buf-move-left . 3)
  (cider-connect . 3)
  (eldoc-mode . 1)
+ (show-paren-mode . 1)
+ (highlight-parentheses-mode . 1)
+ (yas-about . 1)
+ (yas-minor-mode . 2)
+ (yas-expand . 4)
+ (hide-body . 1)
+ (hs-minor-mode . 1)
+ (hs-toggle-hiding . 1)
 )

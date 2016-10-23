@@ -7,6 +7,11 @@
   (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
   )
 
+(require 'clojure-mode)
+(require 'cider-mode)
+(require 'cider)
+
+
 ;; THEME
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -23,10 +28,52 @@
  )
 (load-theme 'monokai t)
 
+
+;; TODO: this is incomplete
+(defvar my-packages '(clojure-mode
+                      paredit
+                      rainbow-delimiters
+                      linum
+                      yasnippet))
+(dolist (p my-packages)
+  (when (not (package-installed-p p))
+    (package-install p)))
+
+;; Yasnippets!
+(when (require 'yasnippet nil 'noerror)
+  (progn
+    (yas/load-directory "~/.emacs.d/snippets")))
+(yas-global-mode 1)
+
+;; HideShow
+
+(add-hook 'hs-minor-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-=") 'hs-toggle-hiding)
+            (local-set-key (kbd "C-+") 'hs-show-all)
+            (local-set-key (kbd "C-_") 'hs-hide-all)))
+
+
 ;; Splash Screen
 (setq inhibit-splash-screen t
       initial-scratch-message nil
       initial-major-mode 'org-mode)
+
+;; Switch to Mini Buffer
+;; useful, ex, when you start to find a file,
+;; you navigate to a different window, and then when you
+;; navigate back to emacs, you need the mouse to get to
+;; the mini buffer.
+;; http://superuser.com/questions/132225/how-to-get-back-to-an-active-minibuffer-prompt-in-emacs-without-the-mouse
+(defun switch-to-minibuffer-window ()
+  "switch to minibuffer window (if active)"
+  (interactive)
+  (when (active-minibuffer-window)
+    (select-frame-set-input-focus (window-frame (active-minibuffer-window)))
+    (select-window (active-minibuffer-window))))
+(global-set-key (kbd "C-c m") 'switch-to-minibuffer-window)
+
+
 
 ;; turn off: scroll bar, tool bar, menu bar
 (scroll-bar-mode -1)
@@ -270,14 +317,19 @@
 
 
 ;; clojure ------------------------------
-(require 'clojure-mode)
-(require 'cider-mode)
-(require 'cider)
 
 (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
 (setq exec-path (append exec-path '("~/bin")))
 (setenv "PATH" (concat (getenv "PATH") ":~/bin"))
 (add-hook 'clojure-mode-hook 'paredit-mode)
+(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+(add-hook 'clojure-mode-hook 'hs-minor-mode)
+(add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
+
+;; when cursor sits on a paren, highlight it's pair
+(show-paren-mode 1)
+(setq show-paren-delay 0)
 
 ;; disable paredit's default kbd's for slurping/barfing
 ;; use insteadone of: C-S-[ (, ), {, } ]
