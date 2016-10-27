@@ -53,6 +53,11 @@
             (local-set-key (kbd "C-+") 'hs-show-all)
             (local-set-key (kbd "C-_") 'hs-hide-all)))
 
+;; Scroll screen, don't move point
+;; adapted from: http://stackoverflow.com/questions/8993183/emacs-scroll-buffer-not-point
+(global-set-key "\M-n" (lambda () (interactive) (scroll-up 4)))
+(global-set-key "\M-p" (lambda () (interactive) (scroll-down 4)))
+
 
 ;; Splash Screen
 (setq inhibit-splash-screen t
@@ -78,7 +83,7 @@
 ;; turn off: scroll bar, tool bar, menu bar
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
-(menu-bar-mode -1)
+;(menu-bar-mode -1)
 
 ;; Display Settings - show file name
 (when window-system
@@ -391,6 +396,31 @@
 ;;;; Clojure Figwheel-Cider nREPL Config stuff
 ;;     https://github.com/bhauman/lein-figwheel/wiki/Using-the-Figwheel-REPL-within-NRepl
 
+;; For (reset)ing a Component-based "Reloaded Workflow"
+;; adapted from:
+;; https://github.com/stuartsierra/dotfiles/blob/d0d1c46ccc4fdd8d2add363615e625cc29d035b0/.emacs#L307-L312
+
+;; find all buffers names which match `reg`, regex
+(defun find-buffer-regex (reg)
+  (interactive)
+  (remove-if-not #'(lambda (x) (string-match reg x))
+                 (mapcar #'buffer-name (buffer-list))))
+
+(defun cider-execute (command)
+  (interactive)
+  (set-buffer (car (find-buffer-regex "cider-repl.*")))
+  (goto-char (point-max))
+  (insert command)
+  (cider-repl-return))
+
+(defun nrepl-reset ()
+  (interactive)
+  (cider-execute "(reset)"))
+
+(define-key cider-mode-map (kbd "C-c r") 'nrepl-reset)
+
+
+
 ;; for coordination between figwheel and CIDER
 (setq cider-cljs-lein-repl
       "(do (require 'figwheel-sidecar.repl-api)
@@ -399,6 +429,12 @@
 
 ;;;; CIDER stuff ------------------------------
 ;; http://cider.readthedocs.io/en/latest/using_the_repl/
+
+;; eldoc-mode : display function sigs in minibuffer
+(add-hook 'cider-repl-mode-hook #'eldoc-mode)
+
+;; enlighten-mode : display values in repl during evaluation
+(add-hook 'cider-repl-mode-hook #'cider-enlighten-mode)
 
 ;; don't switch to repl buffers when CIDER boots
 (setq cider-repl-pop-to-buffer-on-connect nil)

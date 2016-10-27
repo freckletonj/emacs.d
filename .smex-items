@@ -1,13 +1,13 @@
 
 ;; ----- smex-history -----
 (
+ cider-restart
+ cider-drink-a-sip
+ yas-describe-tables
  hs-minor-mode
  list-packages
  yas-minor-mode
  yas-expand
- yas-about
- show-paren-mode
- capitalize-region
 )
 
 ;; ----- smex-data -----
@@ -90,4 +90,7 @@
  (hide-body . 1)
  (hs-minor-mode . 1)
  (hs-toggle-hiding . 1)
+ (yas-describe-tables . 1)
+ (cider-restart . 4)
+ (cider-drink-a-sip . 1)
 )
