@@ -7,10 +7,6 @@
   (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
   )
 
-(require 'clojure-mode)
-(require 'cider-mode)
-(require 'cider)
-
 
 ;; THEME
 (custom-set-variables
@@ -31,13 +27,27 @@
 
 ;; TODO: this is incomplete
 (defvar my-packages '(clojure-mode
+                      cider-mode
+                      cider
                       paredit
                       rainbow-delimiters
                       linum
-                      yasnippet))
+                      yasnippet
+                      smartscan))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
+
+
+(require 'clojure-mode)
+(require 'cider-mode)
+(require 'cider)
+
+
+;; smart-scan
+(global-smartscan-mode t)
+(global-set-key (kbd "M-N") 'smartscan-symbol-go-forward)
+(global-set-key (kbd "M-P") 'smartscan-symbol-go-backward)
 
 ;; Yasnippets!
 (when (require 'yasnippet nil 'noerror)
@@ -46,7 +56,6 @@
 (yas-global-mode 1)
 
 ;; HideShow
-
 (add-hook 'hs-minor-mode-hook
           (lambda ()
             (local-set-key (kbd "C-=") 'hs-toggle-hiding)
@@ -416,8 +425,13 @@
 (defun nrepl-reset ()
   (interactive)
   (cider-execute "(reset)"))
-
 (define-key cider-mode-map (kbd "C-c r") 'nrepl-reset)
+
+(defun nrepl-test ()
+  (interactive)
+  (cider-execute "(test)"))
+(define-key cider-mode-map (kbd "C-c t") 'nrepl-test)
+
 
 
 
@@ -434,7 +448,9 @@
 (add-hook 'cider-repl-mode-hook #'eldoc-mode)
 
 ;; enlighten-mode : display values in repl during evaluation
-(add-hook 'cider-repl-mode-hook #'cider-enlighten-mode)
+;;   NOTE: this is noisy, instead, preface a form which you want
+;;   "enlightened" with `#light`
+;; (add-hook 'cider-repl-mode-hook #'cider-enlighten-mode)
 
 ;; don't switch to repl buffers when CIDER boots
 (setq cider-repl-pop-to-buffer-on-connect nil)
