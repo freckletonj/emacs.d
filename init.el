@@ -25,9 +25,22 @@
 (load-theme 'monokai t)
 
 
+;; highlight the buffer details if focused
+;; allows for finding the focused buffer quicker
+(set-face-attribute  'mode-line
+                 nil 
+                 :foreground "gray90"
+                 :background "gray35" 
+                 :box '(:line-width 1 :style released-button))
+(set-face-attribute  'mode-line-inactive
+                 nil 
+                 :foreground "gray30"
+                 :background "gray10"
+                 :box '(:line-width 1 :style released-button))
+
 ;; TODO: this is incomplete
 (defvar my-packages '(clojure-mode
-                      cider-mode
+                      ;cider-mode
                       cider
                       paredit
                       rainbow-delimiters
@@ -40,9 +53,11 @@
 
 
 (require 'clojure-mode)
-(require 'cider-mode)
+;(require 'cider-mode)
 (require 'cider)
 
+;; Toggle Line Wrapping
+(global-set-key (kbd "C-c w") 'toggle-truncate-lines)
 
 ;; smart-scan
 (global-smartscan-mode t)
@@ -151,7 +166,6 @@
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 
 ;; Unset C-z, for safety (in a terminal, this closes out of everything)
-;; note, further down I use C-z for "undo"
 (global-set-key "\C-z" nil)
 (global-set-key "\C-x\C-z" nil)
 
@@ -183,7 +197,7 @@
 
 ;; Transparency
 ;;(set-frame-parameter (selected-frame) 'alpha '(<active> [<inactive>]))
-(set-frame-parameter (selected-frame) 'alpha '(98 94))
+(set-frame-parameter (selected-frame) 'alpha '(98 90))
 ;;(add-to-list 'default-frame-alist '(alpha 85 50))
 
 ;; set up for iPython (instead of python)
@@ -427,10 +441,17 @@
   (cider-execute "(reset)"))
 (define-key cider-mode-map (kbd "C-c r") 'nrepl-reset)
 
-(defun nrepl-test ()
+(defun nrepl-start-dev ()
   (interactive)
-  (cider-execute "(test)"))
-(define-key cider-mode-map (kbd "C-c t") 'nrepl-test)
+  (cider-execute "(dev) (go)"))
+(define-key cider-mode-map (kbd "C-c s") 'nrepl-start-dev)
+
+
+;; I commented this because `cider`'s tests are better than `duct`'s
+;; (defun nrepl-test ()
+;;   (interactive)
+;;   (cider-execute "(test)"))
+;; (define-key cider-mode-map (kbd "C-c t") 'nrepl-test)
 
 
 
