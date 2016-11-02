@@ -59,6 +59,9 @@
 ;; Toggle Line Wrapping
 (global-set-key (kbd "C-c w") 'toggle-truncate-lines)
 
+;; Magit Shorcut
+(global-set-key (kbd "C-c g") 'magit-status)
+
 ;; smart-scan
 (global-smartscan-mode t)
 (global-set-key (kbd "M-N") 'smartscan-symbol-go-forward)
