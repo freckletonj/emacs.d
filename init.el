@@ -1,4 +1,7 @@
-;;;
+;;; init.el --- Summary
+;;; Commentary:
+;;; -the above 2 lines are to appease flycheck, linter
+;;;  someday I'll figure out what to do with them
 
 ;; Add MELPA package archives
 (when (>= emacs-major-version 24)
@@ -81,7 +84,9 @@
             (local-set-key (kbd "C-_") 'hs-hide-all)))
 
 ;; Scroll screen, don't move point
-;; adapted from: http://stackoverflow.com/questions/8993183/emacs-scroll-buffer-not-point
+;; adapted from: http://stackoverflow.com/questions/8993183/emacs-scroll-buffer-not-point-
+(define-key smartscan-map (kbd "M-n") nil) ; remove conflicting bindings
+(define-key smartscan-map (kbd "M-p") nil)
 (global-set-key "\M-n" (lambda () (interactive) (scroll-up 4)))
 (global-set-key "\M-p" (lambda () (interactive) (scroll-down 4)))
 
