@@ -17,8 +17,17 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" default)))
- '(safe-local-variable-values (quote ((cider-cljs-lein-repl . "(do (dev) (go) (cljs-repl))") (cider-refresh-after-fn . "reloaded.repl/resume") (cider-refresh-before-fn . "reloaded.repl/suspend") (hamlet/basic-offset . 4) (haskell-process-use-ghci . t) (haskell-indent-spaces . 4)))))
+ '(custom-safe-themes
+   (quote
+    ("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" default)))
+ '(safe-local-variable-values
+   (quote
+    ((cider-cljs-lein-repl . "(do (dev) (go) (cljs-repl))")
+     (cider-refresh-after-fn . "reloaded.repl/resume")
+     (cider-refresh-before-fn . "reloaded.repl/suspend")
+     (hamlet/basic-offset . 4)
+     (haskell-process-use-ghci . t)
+     (haskell-indent-spaces . 4)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -43,7 +52,11 @@
 
 ;; TODO: this is incomplete
 (defvar my-packages '(clojure-mode
-                      ;cider-mode
+                      ;; cider-mode
+                      ;; smart-mode-line
+                      ;; helm
+                      ;; helm-ag
+                      ;; avy
                       cider
                       paredit
                       rainbow-delimiters
@@ -58,6 +71,9 @@
 (require 'clojure-mode)
 ;(require 'cider-mode)
 (require 'cider)
+
+;; for Helm-AG
+;;(custom-set-variables '(helm-follow-mode-persistent nil))
 
 ;; Toggle Line Wrapping
 (global-set-key (kbd "C-c w") 'toggle-truncate-lines)
