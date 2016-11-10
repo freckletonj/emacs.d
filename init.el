@@ -196,9 +196,20 @@
 
 ;; neotree - for file navigation
 
-;; ace-jump : navigate quickly inside a buffer's text by jumping the cursor to desired locations
-(require 'ace-jump-mode)
-(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+
+;; Avy (I switched from Ace-Jump mode)
+;;   notice the non-standard key bindings adopted from Ace-Jump
+(global-set-key (kbd "C-c SPC") 'avy-goto-word-1)
+(global-set-key (kbd "C-c C-c SPC") 'avy-goto-char)
+(global-set-key (kbd "C-'") 'avy-goto-line)
+
+(setq avy-background t)
+(setq avy-keys (number-sequence ?a ?z)) ; `(?a ?s ?d ?f ?j ?k ?l ?q ?w ?e ?r ?n ?m ?u ?i)
+
+;; TODO: replace with Avy
+;; ;; ace-jump : navigate quickly inside a buffer's text by jumping the cursor to desired locations
+;; (require 'ace-jump-mode)
+;; (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 ;; C-c C-c is compile, can't use that
 ;;(define-key global-map (kbd "C-c C-c SPC") 'ace-jump-line-mode)
 ;;(define-key global-map (kbd "C-c C-c C-c SPC") 'ace-jump-char-mode)
@@ -239,6 +250,7 @@
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+(avy-setup-default) ; allows a C-' in the middle of a C-s
 
 ;; TODO
 ;; config files
@@ -462,7 +474,13 @@
 ;; (define-key cider-mode-map (kbd "C-c t") 'nrepl-test)
 
 
-
+;; CLJ-Refactor, overwrite Cider's C-c C-m
+(require 'clj-refactor)
+(defun my-clj-refactor-hook ()
+  (clj-refactor-mode 1)
+  (yas-minor-mode 1) ; for adding require/use/import statements
+  (cljr-add-keybindings-with-prefix "C-c C-m"))
+(add-hook 'clojure-mode-hook #'my-clj-refactor-hook)
 
 ;; for coordination between figwheel and CIDER
 (setq cider-cljs-lein-repl
