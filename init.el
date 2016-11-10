@@ -3,6 +3,16 @@
 ;;; -the above 2 lines are to appease flycheck, linter
 ;;;  someday I'll figure out what to do with them
 
+;;;; Organization Tips
+;; (require 'my-appearance)
+;; (require 'my-settings)
+;; (require 'my-defuns)
+;; (require 'my-keys)
+;; (require 'my-eshell)
+;; (require 'my-emms)
+;; (require 'my-org)
+
+
 ;; Add MELPA package archives
 (when (>= emacs-major-version 24)
   (require 'package)
@@ -72,8 +82,14 @@
 ;(require 'cider-mode)
 (require 'cider)
 
-;; for Helm-AG
-;;(custom-set-variables '(helm-follow-mode-persistent nil))
+;;;; Helm-AG
+;; I think persistent means that helm stays open after you take an action
+;; (custom-set-variables '(helm-follow-mode-persistent nil)) 
+
+;; Open Helm AG Previews in Temp Buffer (so they don't pollute my
+;; buffer list
+;; Solution found on: https://github.com/syohex/emacs-helm-ag/issues/152
+(custom-set-variables '(helm-ag-use-temp-buffer t))
 
 ;; Toggle Line Wrapping
 (global-set-key (kbd "C-c w") 'toggle-truncate-lines)
@@ -180,6 +196,7 @@
       ido-use-virtual-buffers t)
 
 ;; multiple cursors
+(require 'cl) ; required for Multiple-Cursors, otherwise `equalp not found` error
 (require 'multiple-cursors)
 (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
 
@@ -266,6 +283,8 @@
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+;; Avy
 (avy-setup-default) ; allows a C-' in the middle of a C-s
 
 ;; TODO
