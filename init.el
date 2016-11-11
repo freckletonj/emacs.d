@@ -22,7 +22,7 @@
  '(blerg t)
  '(custom-safe-themes
    (quote
-    ("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" default)))
+    ("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" default)))
  '(helm-ag-use-temp-buffer t)
  '(helm-source-names-using-follow nil)
  '(safe-local-variable-values
@@ -55,8 +55,18 @@
                  :background "gray10"
                  :box '(:line-width 1 :style released-button))
 
+;; Smart Mode Line (changes appearance of bottom of frame)
+(setq sml/theme 'respectful)
+(rich-minority-mode 1) ; comes with Smart Mode Line
+(add-to-list 'rm-whitelist "") ; don't show any minor modes
+(sml/setup)
+
+
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Install required Packages
+;; Install required Packages if missing
 
 ;; ;; TODO: this is incomplete
 ;; (defvar my-packages '(
@@ -125,6 +135,23 @@
 (define-key smartscan-map (kbd "M-p") nil)
 (global-set-key "\M-n" (lambda () (interactive) (scroll-up 8)))
 (global-set-key "\M-p" (lambda () (interactive) (scroll-down 8)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Org-Mode
+
+(add-hook 'org-mode-hook
+      (lambda ()
+        (local-unset-key (kbd "C-c SPC")) ; for Avy
+        
+        (local-unset-key (kbd "S-<up>")) ; for WindMove
+        (local-unset-key (kbd "S-<down>"))
+        (local-unset-key (kbd "S-<left>"))
+        (local-unset-key (kbd "S-<right>"))
+        
+        (local-unset-key (kbd "C-S-<up>")) ; for Buf Move
+        (local-unset-key (kbd "C-S-<down>"))
+        (local-unset-key (kbd "C-S-<left>"))
+        (local-unset-key (kbd "C-S-<right>"))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -293,7 +320,6 @@
 
 ;; set up for iPython (instead of python)
 (require 'python)
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
