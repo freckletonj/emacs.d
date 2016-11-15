@@ -140,19 +140,34 @@
 ;; Org-Mode
 
 (add-hook 'org-mode-hook
-      (lambda ()
-        (local-unset-key (kbd "C-c SPC")) ; for Avy
-        
-        (local-unset-key (kbd "S-<up>")) ; for WindMove
-        (local-unset-key (kbd "S-<down>"))
-        (local-unset-key (kbd "S-<left>"))
-        (local-unset-key (kbd "S-<right>"))
-        
-        (local-unset-key (kbd "C-S-<up>")) ; for Buf Move
-        (local-unset-key (kbd "C-S-<down>"))
-        (local-unset-key (kbd "C-S-<left>"))
-        (local-unset-key (kbd "C-S-<right>"))))
+          (lambda ()
+            ;; for Avy
+            (local-unset-key (kbd "C-c SPC"))
 
+            ;; for WindMove
+            (local-unset-key (kbd "S-<up>"))
+            (local-unset-key (kbd "S-<down>"))
+            (local-unset-key (kbd "S-<left>"))
+            (local-unset-key (kbd "S-<right>"))
+
+            ;; for Buf Move
+            (local-unset-key (kbd "C-S-<up>"))
+            (local-unset-key (kbd "C-S-<down>"))
+            (local-unset-key (kbd "C-S-<left>"))
+            (local-unset-key (kbd "C-S-<right>"))
+
+            ;; Org-Pomodoro
+            (local-set-key (kbd "<f12>") 'org-pomodoro)))
+
+;; Pomodoro Mode - (org-pomodoro)
+;;   libnotify binding, adapted from: https://www.reddit.com/r/emacs/comments/5ayjjl/pomodoro_in_emacs/
+;; (use-package org-pomodoro
+;;   :ensure t
+;;   :commands (org-pomodoro)
+;;   :config
+;;     (setq alert-user-configuration (quote ((((:category . "org-pomodoro")) libnotify nil)))))
+
+(setq alert-user-configuration (quote ((((:category . "org-pomodoro")) libnotify nil))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Magit Shorcut
@@ -162,10 +177,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Yasnippets
 
-(when (require 'yasnippet nil 'noerror)
-  (progn
-    (yas/load-directory "~/.emacs.d/snippets")))
-(yas-global-mode 1)
+ (when (require 'yasnippet nil 'noerror)
+   (progn
+     (yas/load-directory "~/.emacs.d/snippets")))
+ (yas-global-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; HideShow
@@ -367,23 +382,25 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; FlyCheck
 
-(require 'flycheck)
+;; TODO: remove this, I turned it off cuz it's annoying
 
-;; turn on flychecking globally
-(add-hook 'after-init-hook #'global-flycheck-mode)
+;; (require 'flycheck)
 
-;; disable jshint since we prefer eslint checking
-(setq-default flycheck-disabled-checkers
-  (append flycheck-disabled-checkers
-    '(javascript-jshint)))
+;; ;; turn on flychecking globally
+;; (add-hook 'after-init-hook #'global-flycheck-mode)
 
-;; use eslint with web-mode for jsx files
-(flycheck-add-mode 'javascript-eslint 'web-mode)
+;; ;; disable jshint since we prefer eslint checking
+;; (setq-default flycheck-disabled-checkers
+;;   (append flycheck-disabled-checkers
+;;     '(javascript-jshint)))
 
-;; disable json-jsonlist checking for json files
-(setq-default flycheck-disabled-checkers
-  (append flycheck-disabled-checkers
-    '(json-jsonlist)))
+;; ;; use eslint with web-mode for jsx files
+;; (flycheck-add-mode 'javascript-eslint 'web-mode)
+
+;; ;; disable json-jsonlist checking for json files
+;; (setq-default flycheck-disabled-checkers
+;;   (append flycheck-disabled-checkers
+;;     '(json-jsonlist)))
 
 
 ;; TODO: delete me?
@@ -411,17 +428,56 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Clojure
 
+;; Company - autocompletion for CIDER
+;;   use `C-M-i`
+(add-hook 'cider-repl-mode-hook #'company-mode)
+(add-hook 'cider-mode-hook #'company-mode)
+(setq company-idle-delay nil) ; never start completions automatically
+
+
+;; TODO : I'm using CIDER's `compnay` instead
+;; ;; AC-Cider, autocomplete
+;; (require 'ac-cider)
+;; (add-hook 'cider-mode-hook 'ac-flyspell-workaround)
+;; (add-hook 'cider-mode-hook 'ac-cider-setup)
+;; (add-hook 'cider-repl-mode-hook 'ac-cider-setup)
+;; (eval-after-load "auto-complete"
+;;   '(progn
+;;      (add-to-list 'ac-modes 'cider-mode)
+;;      (add-to-list 'ac-modes 'cider-repl-mode)))
+
+;; (defun set-auto-complete-as-completion-at-point-function ()
+;;   (setq completion-at-point-functions '(auto-complete)))
+
+;; (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
+;; (add-hook 'cider-mode-hook 'set-auto-complete-as-completion-at-point-function)
+
 (require 'clojure-mode)
-;(require 'cider-mode)
+(require 'cider-mode) ;; TODO: what's the diff with `cider` and `cider-mode`?
 (require 'cider)
 
-(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
+;; CIDER functions to remember
+;;   M-.         : jump to symbol's definition
+;;   M-,         : jump to pre-jump location, leaves old buffer open
+;;   C-c M-t v   : trace a function
+;;   C-c C-d C-d : doc for symbol at point
+;;   C-C C-b     : interrupt
+;;   C-M-i       : auto complete
+;;   C-c M-i     : inspect symbol
+;;   M-x cider-browse-ns
+;;   M-x cider-classpath
+;;   <the stack trace ones> - https://cider.readthedocs.io/en/latest/navigating_stacktraces/
+;;   <debugger>             - https://cider.readthedocs.io/en/latest/debugging/
+
 (setq exec-path (append exec-path '("~/bin")))
-(setenv "PATH" (concat (getenv "PATH") ":~/bin"))
+(setenv "PATH" (concat (getenv "PATH") ":~/bin")) ; TODO : why do I have this line?
+
+(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'clojure-mode-hook 'paredit-mode)
-(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 (add-hook 'clojure-mode-hook 'hs-minor-mode)
+
+(add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
 
 ;; when cursor sits on a paren, highlight it's pair
