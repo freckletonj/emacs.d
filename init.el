@@ -25,6 +25,9 @@
     ("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" default)))
  '(helm-ag-use-temp-buffer t)
  '(helm-source-names-using-follow nil)
+ '(package-selected-packages
+   (quote
+    (intero yaml-mode web-mode undo-tree stylus-mode smartscan smart-mode-line shakespeare-mode rainbow-delimiters px puppet-mode org-pomodoro neotree multi-web-mode move-text monokai-theme markdown-mode magit json-mode js2-mode jade-mode helm-projectile helm-ag haskell-mode flycheck expand-region exec-path-from-shell ein cython-mode company coffee-mode clj-refactor buffer-move avy autopair ace-jump-mode)))
  '(safe-local-variable-values
    (quote
     ((cider-cljs-lein-repl . "(do (dev) (go) (cljs-repl))")
@@ -109,12 +112,18 @@
 (global-set-key (kbd "C-x b") 'helm-mini)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 (global-set-key (kbd "C-S") 'helm-occur) ; TODO: helm-swoop instead?
+
 (setq helm-follow-mode-persistent t)
 
 ;; Helm projectile
 (projectile-global-mode)
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
+
+;; Make ag feel more like the command line, allowing regex and `-i`, etc.
+(define-key projectile-mode-map (kbd "C-c p s s") 'helm-do-ag-project-root)
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Smart-Scan
@@ -367,7 +376,7 @@
 
 (add-hook 'web-mode-hook
           (lambda ()
-            (setq web-mode-code-indent-offset 4)
+            (setq web-mode-code-indent-offset 3) ;; I changed this default for a contract I'm on, change it back
             (setq web-mode-markup-indent-offset 4)
             (setq web-mode-attr-indent-offset 4)))
 
@@ -376,7 +385,7 @@
 ;; Haskell
 
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
-
+(add-hook 'haskell-mode-hook 'intero-mode)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -561,10 +570,10 @@
 (add-hook 'clojure-mode-hook #'my-clj-refactor-hook)
 
 ;; for coordination between figwheel and CIDER
-(setq cider-cljs-lein-repl
-      "(do (require 'figwheel-sidecar.repl-api)
-           (figwheel-sidecar.repl-api/start-figwheel!)
-           (figwheel-sidecar.repl-api/cljs-repl))")
+;; (setq cider-cljs-lein-repl
+;;       "(do (require 'figwheel-sidecar.repl-api)
+;;            (figwheel-sidecar.repl-api/start-figwheel!)
+;;            (figwheel-sidecar.repl-api/cljs-repl))")
 
 ;;;; CIDER stuff
 ;; http://cider.readthedocs.io/en/latest/using_the_repl/
