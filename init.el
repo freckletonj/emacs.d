@@ -20,6 +20,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(blerg t)
+ '(company-ghc-show-info t)
  '(custom-safe-themes
    (quote
     ("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" default)))
@@ -27,7 +28,7 @@
  '(helm-source-names-using-follow nil)
  '(package-selected-packages
    (quote
-    (intero yaml-mode web-mode undo-tree stylus-mode smartscan smart-mode-line shakespeare-mode rainbow-delimiters px puppet-mode org-pomodoro neotree multi-web-mode move-text monokai-theme markdown-mode magit json-mode js2-mode jade-mode helm-projectile helm-ag haskell-mode flycheck expand-region exec-path-from-shell ein cython-mode company coffee-mode clj-refactor buffer-move avy autopair ace-jump-mode)))
+    (company-ghc cider clj-refactor clojure-mode hindent ghc intero yaml-mode web-mode undo-tree stylus-mode smartscan smart-mode-line shakespeare-mode rainbow-delimiters px puppet-mode org-pomodoro neotree multi-web-mode move-text monokai-theme markdown-mode magit json-mode js2-mode jade-mode helm-projectile helm-ag expand-region exec-path-from-shell ein cython-mode coffee-mode buffer-move avy autopair ace-jump-mode)))
  '(safe-local-variable-values
    (quote
     ((cider-cljs-lein-repl . "(do (dev) (go) (cljs-repl))")
@@ -61,7 +62,7 @@
 ;; Smart Mode Line (changes appearance of bottom of frame)
 (setq sml/theme 'respectful)
 (rich-minority-mode 1) ; comes with Smart Mode Line
-(add-to-list 'rm-whitelist "") ; don't show any minor modes
+;(add-to-list 'rm-whitelist "") ; don't show any minor modes
 (sml/setup)
 
 
@@ -108,7 +109,7 @@
 
 (global-set-key (kbd "M-x") 'helm-M-x)
 (setq helm-M-x-fuzzy-match t)
-(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+;(global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "C-x b") 'helm-mini)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 (global-set-key (kbd "C-S") 'helm-occur) ; TODO: helm-swoop instead?
@@ -186,10 +187,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Yasnippets
 
- (when (require 'yasnippet nil 'noerror)
-   (progn
-     (yas/load-directory "~/.emacs.d/snippets")))
- (yas-global-mode 1)
+ ;; (when (require 'yasnippet nil 'noerror)
+ ;;   (progn
+ ;;     (yas/load-directory "~/.emacs.d/snippets")))
+ ;; (yas-global-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; HideShow
@@ -383,10 +384,29 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Haskell
+(require 'haskell-mode)
+(add-to-list 'exec-path "~/.local/bin")
 
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+; https://github.com/chrisdone/structured-haskell-mode
+(add-to-list 'load-path "~/_/misc/small/haskell/structured-haskell-mode/elisp")
+(require 'shm)
+(add-hook 'haskell-mode-hook 'structured-haskell-mode)
+
+
+;(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+(autoload 'ghc-init "ghc" nil t)
+(autoload 'ghc-debug "ghc" nil t)
+(autoload 'company-mode "company" nil t)
+
+
+(add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'haskell-mode-hook 'intero-mode)
-
+;(add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+;;(add-hook 'haskell-mode-hook 'global-company-mode)
+(with-eval-after-load 'company
+                                        ;(setq ghc-debug t)
+  (ghc-init)
+  (add-to-list 'company-backends '(company-ghc :with company-dabbrev-code)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; FlyCheck
@@ -538,14 +558,17 @@
 ;; https://github.com/stuartsierra/dotfiles/blob/d0d1c46ccc4fdd8d2add363615e625cc29d035b0/.emacs#L307-L312
 
 ;; find all buffers names which match `reg`, regex
-(defun find-buffer-regex (reg)
+;; and ignore `ignore-reg`
+(defun find-buffer-regex (reg ignore-reg)
   (interactive)
-  (remove-if-not #'(lambda (x) (string-match reg x))
+  (remove-if-not #'(lambda (x) (and (string-match reg x)
+                                 (not (string-match ignore-reg x))))
                  (mapcar #'buffer-name (buffer-list))))
 
 (defun cider-execute (command)
   (interactive)
-  (set-buffer (car (find-buffer-regex "cider-repl.*")))
+  (set-buffer (car (find-buffer-regex "cider-repl .*"
+                                      "cider-repl CLJS.*")))
   (goto-char (point-max))
   (insert command)
   (cider-repl-return))
