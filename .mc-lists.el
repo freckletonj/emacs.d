@@ -5,16 +5,23 @@
       '(
         ace-jump-mode
         backward-sexp
+        beginning-of-buffer
         c-electric-semi&comma
         c-electric-slash
         cider-eval-last-sexp
+        cljr-splice-sexp-killing-backward
         clojure-align
         coffee-dedent-line-backspace
         coffee-newline-and-indent
+        comment-dwim
         comment-or-uncomment-region
         delete-horizontal-space
+        electric-newline-and-maybe-indent
         eval-expression
         forward-sexp
+        haskell-indentation-common-electric-command
+        helm-M-x
+        helm-show-kill-ring
         indent-for-tab-command
         jade-indent
         keyboard-escape-quit
@@ -29,11 +36,9 @@
         org-cycle
         org-delete-char
         org-end-of-line
-        org-force-self-insert
         org-kill-line
         org-meta-return
         org-return-indent
-        org-self-insert-command
         org-yank
         overwrite-mode
         paredit-backslash
@@ -65,7 +70,11 @@
         python-indent-electric-colon
         reverse-transpose-sexps
         sgml-slash
+        shm/del
+        shm/hyphen
+        shm/space
         smex
+        tab-to-tab-stop
         transpose-sexps
         universal-argument-minus
         yaml-electric-dash-and-dot
@@ -75,13 +84,12 @@
 (setq mc/cmds-to-run-once
       '(
         cider-eval-defun-at-point
+        cider-eval-print-last-sexp
         cider-load-buffer
-        comment-dwim
         end-of-buffer
         goto-line
         ido-find-file
+        mouse-set-region
         org-open-at-mouse
-        paredit-reindent-defun
         scroll-bar-toolkit-scroll
-        yaml-electric-backspace
         ))

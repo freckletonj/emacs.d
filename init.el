@@ -28,7 +28,7 @@
  '(helm-source-names-using-follow nil)
  '(package-selected-packages
    (quote
-    (company-ghc cider clj-refactor clojure-mode hindent ghc intero yaml-mode web-mode undo-tree stylus-mode smartscan smart-mode-line shakespeare-mode rainbow-delimiters px puppet-mode org-pomodoro neotree multi-web-mode move-text monokai-theme markdown-mode magit json-mode js2-mode jade-mode helm-projectile helm-ag expand-region exec-path-from-shell ein cython-mode coffee-mode buffer-move avy autopair ace-jump-mode)))
+    (hayoo intero ghc company-ghc cider clj-refactor clojure-mode hindent yaml-mode web-mode undo-tree stylus-mode smartscan smart-mode-line shakespeare-mode rainbow-delimiters px puppet-mode org-pomodoro neotree multi-web-mode move-text monokai-theme markdown-mode magit json-mode js2-mode jade-mode helm-projectile helm-ag expand-region exec-path-from-shell ein cython-mode coffee-mode buffer-move avy autopair ace-jump-mode)))
  '(safe-local-variable-values
    (quote
     ((cider-cljs-lein-repl . "(do (dev) (go) (cljs-repl))")
@@ -46,18 +46,7 @@
 (load-theme 'monokai t)
 
 
-;; highlight the buffer details if focused
-;; allows for finding the focused buffer quicker
-(set-face-attribute 'mode-line
-                 nil 
-                 :foreground "gray90"
-                 :background "gray35" 
-                 :box '(:line-width 1 :style released-button))
-(set-face-attribute 'mode-line-inactive
-                 nil 
-                 :foreground "gray30"
-                 :background "gray10"
-                 :box '(:line-width 1 :style released-button))
+
 
 ;; Smart Mode Line (changes appearance of bottom of frame)
 (setq sml/theme 'respectful)
@@ -65,7 +54,18 @@
 ;(add-to-list 'rm-whitelist "") ; don't show any minor modes
 (sml/setup)
 
-
+;; highlight the buffer details if focused
+;; allows for finding the focused buffer quicker
+(set-face-attribute 'mode-line
+                 nil 
+                 :foreground "#00ff00" ;"gray90"
+                 :background "#a3116b" 
+                 :box '(:line-width 1 :style released-button))
+(set-face-attribute 'mode-line-inactive
+                 nil 
+                 :foreground "gray30"
+                 :background "gray10"
+                 :box '(:line-width 1 :style released-button))
 
 
 
@@ -143,8 +143,10 @@
 ;; adapted from: http://stackoverflow.com/questions/8993183/emacs-scroll-buffer-not-point-
 (define-key smartscan-map (kbd "M-n") nil) ; remove conflicting bindings
 (define-key smartscan-map (kbd "M-p") nil)
-(global-set-key "\M-n" (lambda () (interactive) (scroll-up 8)))
-(global-set-key "\M-p" (lambda () (interactive) (scroll-down 8)))
+
+;; Works great, except with haskell (navigates to errors)
+;; (global-set-key "\M-n" (lambda () (interactive) (scroll-up 8)))
+;; (global-set-key "\M-p" (lambda () (interactive) (scroll-down 8)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org-Mode
@@ -384,29 +386,157 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Haskell
-(require 'haskell-mode)
-(add-to-list 'exec-path "~/.local/bin")
 
-; https://github.com/chrisdone/structured-haskell-mode
-(add-to-list 'load-path "~/_/misc/small/haskell/structured-haskell-mode/elisp")
-(require 'shm)
-(add-hook 'haskell-mode-hook 'structured-haskell-mode)
-
-
-;(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
-(autoload 'ghc-init "ghc" nil t)
-(autoload 'ghc-debug "ghc" nil t)
-(autoload 'company-mode "company" nil t)
-
-
-(add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
+(package-install 'intero)
 (add-hook 'haskell-mode-hook 'intero-mode)
-;(add-hook 'haskell-mode-hook (lambda () (ghc-init)))
-;;(add-hook 'haskell-mode-hook 'global-company-mode)
-(with-eval-after-load 'company
-                                        ;(setq ghc-debug t)
-  (ghc-init)
-  (add-to-list 'company-backends '(company-ghc :with company-dabbrev-code)))
+
+
+
+
+;; --------------------------------------------------
+;; --------------------------------------------------
+;; --------------------------------------------------
+
+
+
+
+;; ;; https://github.com/purcell/emacs.d/blob/effd06ad39f73cf84bdfde082d986827547ee00e/lisp/init-elpa.el#L41
+;; (defun require-package (package &optional min-version no-refresh)
+;;   "Install given PACKAGE, optionally requiring MIN-VERSION.
+;; If NO-REFRESH is non-nil, the available package lists will not be
+;; re-downloaded in order to locate PACKAGE."
+;;   (if (package-installed-p package min-version)
+;;       t
+;;     (if (or (assoc package package-archive-contents) no-refresh)
+;;         (if (boundp 'package-selected-packages)
+;;             ;; Record this as a package the user installed explicitly
+;;             (package-install package nil)
+;;           (package-install package))
+;;       (progn
+;;         (package-refresh-contents)
+;;         (require-package package min-version t)))))
+
+
+;; (defun maybe-require-package (package &optional min-version no-refresh)
+;;   "Try to install PACKAGE, and return non-nil if successful.
+;; In the event of failure, return nil and print a warning message.
+;; Optionally require MIN-VERSION.  If NO-REFRESH is non-nil, the
+;; available package lists will not be re-downloaded in order to
+;; locate PACKAGE."
+;;   (condition-case err
+;;       (require-package package min-version no-refresh)
+;;     (error
+;;      (message "Couldn't install optional package `%s': %S" package err)
+;;      nil)))
+
+;; (defalias 'after-load 'with-eval-after-load)
+;; (defun add-auto-mode (mode &rest patterns)
+;;   "Add entries to `auto-mode-alist' to use `MODE' for all given file `PATTERNS'."
+;;   (dolist (pattern patterns)
+;;     (add-to-list 'auto-mode-alist (cons pattern mode))))
+
+;; (require-package 'haskell-mode)
+
+;; 
+;; ;; Use intero for completion and flycheck
+
+;; (when (maybe-require-package 'intero)
+;;   (after-load 'haskell-mode
+;;     (add-hook 'haskell-mode-hook 'intero-mode)
+;;     (add-hook 'haskell-mode-hook 'eldoc-mode)
+;;     )
+;;   (after-load 'intero
+;;     (after-load 'flycheck
+;;       (flycheck-add-next-checker 'intero
+;;                                  '(warning . haskell-hlint)))))
+
+
+;; (add-auto-mode 'haskell-mode "\\.ghci\\'")
+
+;; ;; Indentation
+;; (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+
+;; ;; Source code helpers
+
+;; (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
+
+;; (setq-default haskell-stylish-on-save t)
+
+;; (when (maybe-require-package 'hindent)
+;;   (add-hook 'haskell-mode-hook 'hindent-mode))
+
+;; (maybe-require-package 'hayoo)
+;; (after-load 'haskell-mode
+;;   (define-key haskell-mode-map (kbd "C-c h") 'hoogle)
+;;   (define-key haskell-mode-map (kbd "C-o") 'open-line))
+
+
+;; (after-load 'page-break-lines
+;;   (push 'haskell-mode page-break-lines-modes))
+
+
+;; (after-load 'haskell
+;;   (define-key interactive-haskell-mode-map (kbd "M-N") 'haskell-goto-next-error)
+;;   (define-key interactive-haskell-mode-map (kbd "M-P") 'haskell-goto-prev-error))
+
+
+;; (provide 'init-haskell)
+
+
+
+
+
+
+
+
+
+;; --------------------------------------------------
+;; --------------------------------------------------
+;; --------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+;; (REQUIRE 'haskell-mode)
+;; ;; (add-to-list 'exec-path "~/.local/bin")
+
+;; ;; ghc-mod struggles to grab the version compiled by the appropriate version of ghc
+;; ;; (add-to-list 'exec-path "/home/josh/.stack/snapshots/x86_64-linux/lts-6.28/7.10.3/bin")
+
+;; ;; SHM - Structured Haskell Mode
+;; ;; https://github.com/chrisdone/structured-haskell-mode
+;; ;; (add-to-list 'load-path "~/_/misc/small/haskell/structured-haskell-mode/elisp")
+
+;; ;; (require 'shm)
+;; ;; (add-hook 'haskell-mode-hook 'structured-haskell-mode)
+;; ;; (set-face-background 'shm-current-face "#555555")
+;; ;; (set-face-background 'shm-quarantine-face "lemonchiffon")
+;; ;; (when (and (bound-and-true-p haskell-indentation-mode) ; not sure if this works, but SHM requirtes you turn off haskell-indentation-mode
+;; ;;            (fboundp 'haskell-indentation-mode))
+;; ;;   (haskell-indentation-mode 0))
+
+
+;; ;(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+;; (autoload 'ghc-init "ghc" nil t)
+;; (autoload 'ghc-debug "ghc" nil t)
+;; (autoload 'company-mode "company" nil t)
+
+
+;; (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
+;; (add-hook 'haskell-mode-hook 'intero-mode)
+;; ;(add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+;; ;;(add-hook 'haskell-mode-hook 'global-company-mode)
+;; (with-eval-after-load 'company
+;;                                         ;(setq ghc-debug t)
+;;   (ghc-init)
+;;   (add-to-list 'company-backends '(company-ghc :with company-dabbrev-code)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; FlyCheck
@@ -619,13 +749,19 @@
 ;; wrap CIDER stack traces
 (setq cider-stacktrace-fill-column 80)
 
+;; disable CIDER help banner
+(setq cider-repl-display-help-banner nil)
+
 ;; enable paredit in your REPL
 (add-hook 'cider-repl-mode-hook 'paredit-mode)
 
 
 
-
-
+;; Frames-Only-Mode
+;;   this mode tries to pass window tiling functionality to XMonad/a more generic tiling manager
+(add-to-list 'load-path "misc/frames-only-mode")
+(require 'frames-only-mode)
+(frames-only-mode)
 
 
 ;;; init.el ends here
