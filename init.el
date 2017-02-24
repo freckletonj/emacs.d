@@ -28,7 +28,7 @@
  '(helm-source-names-using-follow nil)
  '(package-selected-packages
    (quote
-    (hayoo intero ghc company-ghc cider clj-refactor clojure-mode hindent yaml-mode web-mode undo-tree stylus-mode smartscan smart-mode-line shakespeare-mode rainbow-delimiters px puppet-mode org-pomodoro neotree multi-web-mode move-text monokai-theme markdown-mode magit json-mode js2-mode jade-mode helm-projectile helm-ag expand-region exec-path-from-shell ein cython-mode coffee-mode buffer-move avy autopair ace-jump-mode)))
+    (leuven-theme zenburn-theme goto-last-change hayoo intero ghc company-ghc cider clj-refactor clojure-mode hindent yaml-mode web-mode undo-tree stylus-mode smartscan smart-mode-line shakespeare-mode rainbow-delimiters px puppet-mode org-pomodoro neotree multi-web-mode move-text monokai-theme markdown-mode magit json-mode js2-mode jade-mode helm-projectile helm-ag expand-region exec-path-from-shell ein cython-mode coffee-mode buffer-move avy autopair ace-jump-mode)))
  '(safe-local-variable-values
    (quote
     ((cider-cljs-lein-repl . "(do (dev) (go) (cljs-repl))")
@@ -43,9 +43,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-(load-theme 'monokai t)
-
-
 
 
 ;; Smart Mode Line (changes appearance of bottom of frame)
@@ -87,7 +84,12 @@
 ;;                       rainbow-delimiters
 ;;                       linum
 ;;                       yasnippet
-;;                       smartscan))
+;;                       smartscan
+;; restclient
+;; company-restclient
+;;
+;;
+;; ))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -136,6 +138,18 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Misc
 
+;; delete frame, useful for frames-only-mode
+(define-key global-map (kbd "C-x d") nil) ;; apparently, dired declares this kbd in global-map
+(global-set-key (kbd "C-x d") 'delete-frame)
+
+;; imenu
+(global-unset-key (kbd "M-i"))
+(global-set-key (kbd "M-i") 'imenu)
+
+;; goto-last-chage
+(require 'goto-last-change)
+(global-set-key (kbd "C-c /") 'goto-last-change)
+
 ;; Toggle Line Wrapping
 (global-set-key (kbd "C-c w") 'toggle-truncate-lines)
 
@@ -144,9 +158,14 @@
 (define-key smartscan-map (kbd "M-n") nil) ; remove conflicting bindings
 (define-key smartscan-map (kbd "M-p") nil)
 
-;; Works great, except with haskell (navigates to errors)
-;; (global-set-key "\M-n" (lambda () (interactive) (scroll-up 8)))
-;; (global-set-key "\M-p" (lambda () (interactive) (scroll-down 8)))
+(require 'markdown-mode)
+(define-key markdown-mode-map (kbd "M-n") nil) ; remove conflicting bindings
+(define-key markdown-mode-map (kbd "M-p") nil)
+
+
+;; Works great, except perhaps with haskell (navigates to errors)
+(global-set-key "\M-n" (lambda () (interactive) (scroll-up 8)))
+(global-set-key "\M-p" (lambda () (interactive) (scroll-down 8)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org-Mode
@@ -228,7 +247,7 @@
 ;; turn off: scroll bar, tool bar, menu bar
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
-;(menu-bar-mode -1)
+(menu-bar-mode -1)
 
 ;; Display Settings - show file name
 (when window-system
@@ -313,7 +332,6 @@
 (global-set-key (kbd "C-@") 'er/expand-region)
 
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Multiple-Cursors
 
@@ -326,17 +344,16 @@
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Avy (I switched from Ace-Jump mode)
 
 (global-set-key (kbd "C-c SPC") 'avy-goto-word-1)
-(global-set-key (kbd "C-c C-c SPC") 'avy-goto-char)
+(global-set-key (kbd "C-c C-SPC") 'avy-goto-char-2)
+(global-set-key (kbd "C-C C-C SPC") 'avy-kill-region)
 (global-set-key (kbd "C-'") 'avy-goto-line)
 
 ;; config
+(setq avy-all-windows 'all-frames) ;; useful in frames-only-mode
 (setq avy-background t)
 (setq avy-keys (number-sequence ?a ?z)) ; `(?a ?s ?d ?f ?j ?k ?l ?q ?w ?e ?r ?n ?m ?u ?i)
 
@@ -345,7 +362,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Python
 
-;; set up for iPython (instead of python)
 (require 'python)
 
 
@@ -591,7 +607,7 @@
 ;;   use `C-M-i`
 (add-hook 'cider-repl-mode-hook #'company-mode)
 (add-hook 'cider-mode-hook #'company-mode)
-(setq company-idle-delay nil) ; never start completions automatically
+;;(setq company-idle-delay nil) ; never start completions automatically
 
 
 ;; TODO : I'm using CIDER's `compnay` instead
@@ -606,7 +622,7 @@
 ;;      (add-to-list 'ac-modes 'cider-repl-mode)))
 
 ;; (defun set-auto-complete-as-completion-at-point-function ()
-;;   (setq completion-at-point-functions '(auto-complete)))
+;;    (setq completion-at-point-functions '(auto-complete)))
 
 ;; (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
 ;; (add-hook 'cider-mode-hook 'set-auto-complete-as-completion-at-point-function)
@@ -759,9 +775,78 @@
 
 ;; Frames-Only-Mode
 ;;   this mode tries to pass window tiling functionality to XMonad/a more generic tiling manager
-(add-to-list 'load-path "misc/frames-only-mode")
+(add-to-list 'load-path "~/.emacs.d/misc/frames-only-mode")
 (require 'frames-only-mode)
 (frames-only-mode)
+(add-to-list 'frames-only-mode-use-window-functions
+             'restclient-http-handle-response)
+
+;; Company Mode
+;; reference: https://github.com/cqql/dotfiles/blob/daa3bc6b52b5bfba02603aa4e614242f7c95c594/src/.emacs.d/init.org
+(require 'use-package)
+(use-package company
+  :bind ("C-M-i" . company-complete)
+  :init
+  (setf company-idle-delay 0
+        company-minimum-prefix-length 2
+        company-show-numbers t
+        company-selection-wrap-around t
+        company-backends (list #'company-css
+                               #'company-ghc
+                               #'comapny-restclient
+                               (list #'company-dabbrev-code
+                                     #'company-keywords)
+                               #'company-files
+                               #'company-dabbrev))
+  :config
+  (global-company-mode t))
+(global-set-key (kbd "C-M-i") #'company-complete)
+
+;; Allow RestClient language in Org-Babel
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((restclient . t)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; THEMES
+
+(add-to-list 'custom-theme-load-path "~/.emacs.d/misc/meacupla-theme")
+
+
+;; check if an emacs --daemon is responsible for this instance
+;;   if it _is_ then don't load a theme since it did
+;;   otherwise do.
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (cond ((not (boundp 'daemoned))   (load-theme 'monokai t))
+                  ((string= daemoned "nihil") (load-theme 'monokai t))
+                  ((string= daemoned "alpha") (load-theme 'zenburn t))
+                  ((string= daemoned "beta")  (load-theme 'meacupla t))
+                  ((string= daemoned "gamma") (load-theme 'leuven t)))))
+
+;; -- .bashrc --
+
+;; # frames-only-mode for emacs, this allows emacs tiling to be replaced (more or less) by xmonad's
+
+;; # Emacs: Nihil Server
+;; alias endemon="emacs --eval '(setq daemoned \"nihil\")' --daemon=nihil "
+;; alias enkill="emacsclient -s nihil -e '(let ((last-nonmenu-event nil)) (save-buffers-kill-emacs))'"
+;; alias en="emacsclient --socket-name=nihil --create-frame --no-wait --eval '(switch-to-buffer nil)'"
+
+;; # Emacs: Alpha Server
+;; alias eademon="emacs --eval '(setq daemoned \"alpha\")' --daemon=alpha "
+;; alias eakill="emacsclient -s alpha -e '(let ((last-nonmenu-event nil)) (save-buffers-kill-emacs))'"
+;; alias ea="emacsclient --socket-name=alpha --create-frame --no-wait --eval '(switch-to-buffer nil)'"
+
+;; # Emacs: Beta Server
+;; alias ebdemon="emacs --eval '(setq daemoned \"beta\")' --daemon=beta "
+;; alias ebkill="emacsclient -s beta -e '(let ((last-nonmenu-event nil)) (save-buffers-kill-emacs))'"
+;; alias eb="emacsclient --socket-name=beta --create-frame --no-wait --eval '(switch-to-buffer nil)'"
+
+;; # Emacs: Gamma Server
+;; alias egdemon="emacs --eval '(setq daemoned \"gamma\")' --daemon=gamma "
+;; alias egkill="emacsclient -s gamma -e '(let ((last-nonmenu-event nil)) (save-buffers-kill-emacs))'"
+;; alias eg="emacsclient --socket-name=gamma --create-frame --no-wait --eval '(switch-to-buffer nil)'"
 
 
 ;;; init.el ends here
