@@ -2,8 +2,10 @@
 *~
 \#*\#
 .\#*
-/elpa
+elpa/
 session.*
 projectile-bookmarks.eld
 url/
 misc/
+/.smex-items
+/ac-comphist.dat

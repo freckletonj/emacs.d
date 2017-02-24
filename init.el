@@ -51,18 +51,20 @@
 ;(add-to-list 'rm-whitelist "") ; don't show any minor modes
 (sml/setup)
 
-;; highlight the buffer details if focused
+;; highlight the buffer details if focused removed since using
+;;   frames-only-mode with xmonad, and it conflicts with other themes
+;;
 ;; allows for finding the focused buffer quicker
-(set-face-attribute 'mode-line
-                 nil 
-                 :foreground "#00ff00" ;"gray90"
-                 :background "#a3116b" 
-                 :box '(:line-width 1 :style released-button))
-(set-face-attribute 'mode-line-inactive
-                 nil 
-                 :foreground "gray30"
-                 :background "gray10"
-                 :box '(:line-width 1 :style released-button))
+;; (set-face-attribute 'mode-line
+;;                  nil 
+;;                  :foreground "#00ff00" ;"gray90"
+;;                  :background "#a3116b" 
+;;                  :box '(:line-width 1 :style released-button))
+;; (set-face-attribute 'mode-line-inactive
+;;                  nil 
+;;                  :foreground "gray30"
+;;                  :background "gray10"
+;;                  :box '(:line-width 1 :style released-button))
 
 
 
@@ -825,28 +827,41 @@
                   ((string= daemoned "gamma") (load-theme 'leuven t)))))
 
 ;; -- .bashrc --
-
 ;; # frames-only-mode for emacs, this allows emacs tiling to be replaced (more or less) by xmonad's
-
+;; #   the following uses functions instead of aliases because aliases don't play nice
+;; #   with a bash -i interactive shell
 ;; # Emacs: Nihil Server
-;; alias endemon="emacs --eval '(setq daemoned \"nihil\")' --daemon=nihil "
-;; alias enkill="emacsclient -s nihil -e '(let ((last-nonmenu-event nil)) (save-buffers-kill-emacs))'"
-;; alias en="emacsclient --socket-name=nihil --create-frame --no-wait --eval '(switch-to-buffer nil)'"
+;; endemon(){
+;;     emacs --eval "(setq daemoned \"nihil\")" --daemon=nihil; }
+;; export -f endemon
+;; enkill(){ emacsclient -s nihil -e "(let ((last-nonmenu-event nil)) (save-buffers-kill-emacs))"; }
+;; export -f enkill
+;; en(){ emacsclient --socket-name=nihil --create-frame --no-wait --eval "(switch-to-buffer nil)"; }
+;; export -f en
 
 ;; # Emacs: Alpha Server
-;; alias eademon="emacs --eval '(setq daemoned \"alpha\")' --daemon=alpha "
-;; alias eakill="emacsclient -s alpha -e '(let ((last-nonmenu-event nil)) (save-buffers-kill-emacs))'"
-;; alias ea="emacsclient --socket-name=alpha --create-frame --no-wait --eval '(switch-to-buffer nil)'"
+;; eademon(){ emacs --eval "(setq daemoned \"alpha\")" --daemon=alpha; }
+;; export -f eademon
+;; eakill(){ emacsclient -s alpha -e "(let ((last-nonmenu-event nil)) (save-buffers-kill-emacs))"; }
+;; export -f eakill
+;; ea(){ emacsclient --socket-name=alpha --create-frame --no-wait --eval "(switch-to-buffer nil)"; }
+;; export -f ea
 
 ;; # Emacs: Beta Server
-;; alias ebdemon="emacs --eval '(setq daemoned \"beta\")' --daemon=beta "
-;; alias ebkill="emacsclient -s beta -e '(let ((last-nonmenu-event nil)) (save-buffers-kill-emacs))'"
-;; alias eb="emacsclient --socket-name=beta --create-frame --no-wait --eval '(switch-to-buffer nil)'"
+;; ebdemon(){ emacs --eval "(setq daemoned \"beta\")" --daemon=beta; }
+;; export -f ebdemon
+;; ebkill(){ emacsclient -s beta -e "(let ((last-nonmenu-event nil)) (save-buffers-kill-emacs))"; }
+;; export -f ebkill
+;; eb(){ emacsclient --socket-name=beta --create-frame --no-wait --eval "(switch-to-buffer nil)"; }
+;; export -f eb
 
 ;; # Emacs: Gamma Server
-;; alias egdemon="emacs --eval '(setq daemoned \"gamma\")' --daemon=gamma "
-;; alias egkill="emacsclient -s gamma -e '(let ((last-nonmenu-event nil)) (save-buffers-kill-emacs))'"
-;; alias eg="emacsclient --socket-name=gamma --create-frame --no-wait --eval '(switch-to-buffer nil)'"
+;; egdemon(){ emacs --eval "(setq daemoned \"gamma\")" --daemon=gamma; }
+;; export -f egdemon
+;; egkill(){ emacsclient -s gamma -e "(let ((last-nonmenu-event nil)) (save-buffers-kill-emacs))"; }
+;; export -f egkill
+;; eg(){ emacsclient --socket-name=gamma --create-frame --no-wait --eval "(switch-to-buffer nil)"; }
+;; export -f eg
 
 
 ;;; init.el ends here
